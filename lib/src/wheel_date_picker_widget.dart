@@ -56,7 +56,7 @@ class WheelDatePickerSlider extends StatelessWidget {
   final double itemWidth;
 
   /// On optional listener that's called when the centered item changes.
-  final ValueChanged<double> onChanged;
+  final ValueChanged<int> onChanged;
 
   final onChange = ValueNotifier(0);
 
@@ -64,105 +64,102 @@ class WheelDatePickerSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              height: dateContainerHeight,
-              child: ListView.builder(
-                itemCount: maxDate,
-                shrinkWrap: true,
-                controller: dateController,
-                itemBuilder: (_, index) {
-                  return Container(
-                    height: dateContainerHeight,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.baseline,
-                      textBaseline: TextBaseline.ideographic,
-                      children: [
-                        Text(
-                          (index + 1).toString().padLeft(2, '0'),
-                          style: textStyle ??
-                              TextStyle(
-                                fontSize: 76,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xff4863e1),
-                              ),
-                        ),
-                        Text(
-                          sanitizeDay(index + 1),
-                          style: subTextStyle ??
-                              TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xff4863e1),
-                              ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-            Container(
-              height: wheelHeight,
-              child: RotatedBox(
-                quarterTurns: -1,
-                child: Stack(
+    return Column(
+      children: [
+        Container(
+          height: dateContainerHeight,
+          child: ListView.builder(
+            itemCount: maxDate,
+            shrinkWrap: true,
+            controller: dateController,
+            itemBuilder: (_, index) {
+              return Container(
+                height: dateContainerHeight,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                  textBaseline: TextBaseline.ideographic,
                   children: [
-                    ListWheelScrollView(
-                      controller: controller,
-                      itemExtent: itemWidth,
-                      physics: FixedExtentScrollPhysics(),
-                      perspective: 0.00000001,
-                      onSelectedItemChanged: (val) {
-                        onChange.value = val;
-                        dateController.animateTo(
-                          val * dateContainerHeight,
-                          duration: animDuration,
-                          curve: Curves.fastOutSlowIn,
-                        );
-                      },
-                      children: [
-                        for (var i = 0; i < maxDate; i++) ...{
-                          Column(
-                            children: [
-                              SecondaryPointer(
-                                color: config.color,
-                                width: config.height,
-                                height: config.width,
-                              ),
-                              if (i != maxDate - 1) ...{
-                                for (var i = 0; i < secondaryBarCount; i++) ...{
-                                  SizedBox(height: config.gap),
-                                  SecondaryPointer(
-                                    color: config.color,
-                                    width: config.secondaryHeight,
-                                    height: config.width,
-                                  ),
-                                },
-                              }
-                            ],
-                          )
-                        }
-                      ],
+                    Text(
+                      (index + 1).toString().padLeft(2, '0'),
+                      style: textStyle ??
+                          TextStyle(
+                            fontSize: 76,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xff4863e1),
+                          ),
                     ),
-                    Positioned(
-                      top: selectorLeftSpacing,
-                      child: Container(
-                        height: selectorWidth,
-                        width: selectorHeight,
-                        color: selectorColor,
-                      ),
-                    )
+                    Text(
+                      sanitizeDay(index + 1),
+                      style: subTextStyle ??
+                          TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xff4863e1),
+                          ),
+                    ),
                   ],
                 ),
-              ),
-            ),
-          ],
+              );
+            },
+          ),
         ),
-      ),
+        Container(
+          height: wheelHeight,
+          child: RotatedBox(
+            quarterTurns: -1,
+            child: Stack(
+              children: [
+                ListWheelScrollView(
+                  controller: controller,
+                  itemExtent: itemWidth,
+                  physics: FixedExtentScrollPhysics(),
+                  perspective: 0.00000001,
+                  onSelectedItemChanged: (val) {
+                    onChange.value = val;
+                    onChanged.call(val + 1);
+                    dateController.animateTo(
+                      val * dateContainerHeight,
+                      duration: animDuration,
+                      curve: Curves.fastOutSlowIn,
+                    );
+                  },
+                  children: [
+                    for (var i = 0; i < maxDate; i++) ...{
+                      Column(
+                        children: [
+                          SecondaryPointer(
+                            color: config.color,
+                            width: config.height,
+                            height: config.width,
+                          ),
+                          if (i != maxDate - 1) ...{
+                            for (var i = 0; i < secondaryBarCount; i++) ...{
+                              SizedBox(height: config.gap),
+                              SecondaryPointer(
+                                color: config.color,
+                                width: config.secondaryHeight,
+                                height: config.width,
+                              ),
+                            },
+                          }
+                        ],
+                      )
+                    }
+                  ],
+                ),
+                Positioned(
+                  top: selectorLeftSpacing,
+                  child: Container(
+                    height: selectorWidth,
+                    width: selectorHeight,
+                    color: selectorColor,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
