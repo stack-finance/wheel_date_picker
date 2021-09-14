@@ -20,8 +20,10 @@ class WheelDatePickerSlider extends StatelessWidget {
     this.selectorWidth = 3,
     this.selectorColor = const Color(0xff4c67e2),
     this.controller,
+    this.minDate = 0,
   })  : assert(itemWidth >= 0),
         assert(maxDate >= 0),
+        assert(minDate >= 0),
         super(key: key);
 
   final double dateContainerHeight;
@@ -49,6 +51,12 @@ class WheelDatePickerSlider extends StatelessWidget {
   /// Maximum weight that the slider can be scrolled
   final int maxDate;
 
+  ///
+  /// Minimum date that slider can be scrolled minimum
+  /// eg. if min date is 12 set min date to 11
+  ///
+  final int minDate;
+
   /// Pointer configuration
   final PointerConfig config;
 
@@ -64,102 +72,105 @@ class WheelDatePickerSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          height: dateContainerHeight,
-          child: ListView.builder(
-            itemCount: maxDate,
-            shrinkWrap: true,
-            controller: dateController,
-            itemBuilder: (_, index) {
-              return Container(
-                height: dateContainerHeight,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.baseline,
-                  textBaseline: TextBaseline.ideographic,
-                  children: [
-                    Text(
-                      (index + 1).toString().padLeft(2, '0'),
-                      style: textStyle ??
-                          TextStyle(
-                            fontSize: 76,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xff4863e1),
-                          ),
-                    ),
-                    Text(
-                      sanitizeDay(index + 1),
-                      style: subTextStyle ??
-                          TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xff4863e1),
-                          ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-        Container(
-          height: wheelHeight,
-          child: RotatedBox(
-            quarterTurns: -1,
-            child: Stack(
-              children: [
-                ListWheelScrollView(
-                  controller: controller,
-                  itemExtent: itemWidth,
-                  physics: FixedExtentScrollPhysics(),
-                  perspective: 0.00000001,
-                  onSelectedItemChanged: (val) {
-                    onChange.value = val;
-                    onChanged.call(val + 1);
-                    dateController.animateTo(
-                      val * dateContainerHeight,
-                      duration: animDuration,
-                      curve: Curves.fastOutSlowIn,
-                    );
-                  },
-                  children: [
-                    for (var i = 0; i < maxDate; i++) ...{
-                      Column(
-                        children: [
-                          SecondaryPointer(
-                            color: config.color,
-                            width: config.height,
-                            height: config.width,
-                          ),
-                          if (i != maxDate - 1) ...{
-                            for (var i = 0; i < secondaryBarCount; i++) ...{
-                              SizedBox(height: config.gap),
-                              SecondaryPointer(
-                                color: config.color,
-                                width: config.secondaryHeight,
-                                height: config.width,
-                              ),
-                            },
-                          }
-                        ],
-                      )
-                    }
-                  ],
-                ),
-                Positioned(
-                  top: selectorLeftSpacing,
-                  child: Container(
-                    height: selectorWidth,
-                    width: selectorHeight,
-                    color: selectorColor,
+    return Scaffold(
+      body: Column(
+        children: [
+          Container(
+            height: dateContainerHeight,
+            child: ListView.builder(
+              itemCount: maxDate - minDate,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              controller: dateController,
+              itemBuilder: (_, index) {
+                return Container(
+                  height: dateContainerHeight,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.ideographic,
+                    children: [
+                      Text(
+                        (index + minDate + 1).toString().padLeft(2, '0'),
+                        style: textStyle ??
+                            TextStyle(
+                              fontSize: 76,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xff4863e1),
+                            ),
+                      ),
+                      Text(
+                        sanitizeDay(index + minDate + 1),
+                        style: subTextStyle ??
+                            TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xff4863e1),
+                            ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                );
+              },
             ),
           ),
-        ),
-      ],
+          Container(
+            height: wheelHeight,
+            child: RotatedBox(
+              quarterTurns: -1,
+              child: Stack(
+                children: [
+                  ListWheelScrollView(
+                    controller: controller,
+                    itemExtent: itemWidth,
+                    physics: FixedExtentScrollPhysics(),
+                    perspective: 0.00000001,
+                    onSelectedItemChanged: (val) {
+                      onChange.value = val;
+                      onChanged.call(val + 1);
+                      dateController.animateTo(
+                        val * dateContainerHeight,
+                        duration: animDuration,
+                        curve: Curves.fastOutSlowIn,
+                      );
+                    },
+                    children: [
+                      for (var i = 0; i < maxDate - minDate; i++) ...{
+                        Column(
+                          children: [
+                            SecondaryPointer(
+                              color: config.color,
+                              width: config.height,
+                              height: config.width,
+                            ),
+                            if (i != maxDate - minDate - 1) ...{
+                              for (var i = 0; i < secondaryBarCount; i++) ...{
+                                SizedBox(height: config.gap),
+                                SecondaryPointer(
+                                  color: config.color,
+                                  width: config.secondaryHeight,
+                                  height: config.width,
+                                ),
+                              },
+                            }
+                          ],
+                        )
+                      }
+                    ],
+                  ),
+                  Positioned(
+                    top: selectorLeftSpacing,
+                    child: Container(
+                      height: selectorWidth,
+                      width: selectorHeight,
+                      color: selectorColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
