@@ -28,4 +28,4 @@ WheelDatePickerSlider(
 
 ## Preview
 
-<img align="left" src="https://github.com/stack-finance/wheel_date_picker/blob/master/Capture.PNG" alt="Capture" style="zoom: 67%;" />
+<img align="left" src="https://raw.githubusercontent.com/stack-finance/wheel_date_picker/master/Capture.PNG" alt="Capture" style="zoom: 67%;" />
