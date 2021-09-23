@@ -2,7 +2,7 @@
 
 A wheel liked date picker with configurable colors and distance between steps.
 
-<img align="left" src="C:\Users\stack\StudioProjects\wheel_date_picker\Capture.PNG" alt="Capture" style="zoom: 67%;" />
+<img align="left" src="Capture.PNG" alt="Capture" style="zoom: 67%;" />
 
 ## Installing
 
@@ -13,15 +13,11 @@ dependencies:
 	wheel_date_picker: <current_version>
 ```
 
-
-
 ## Importing
 
 ```
 import 'package:wheel_date_picker/wheel_date_picker.dart';
 ```
-
-
 
 ## Usage
 
