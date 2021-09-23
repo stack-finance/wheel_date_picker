@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 class PointerConfig {
   PointerConfig({
     this.width = 2,
-    this.height = 96,
+    this.height = 95,
     this.secondaryHeight = 48,
     this.color = const Color(0xffcccad8),
-    this.gap = 40,
+    this.gap = 30,
   });
 
   /// If non-null, requires the child to have exactly this Width.

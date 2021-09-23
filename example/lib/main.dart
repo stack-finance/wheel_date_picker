@@ -14,9 +14,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: WheelDatePickerSlider(
-        onChanged: (_) {},
-        config: PointerConfig(color: Color(0xffcccad8)),
+      home: SafeArea(
+        child: WheelDatePickerSlider(
+          onChanged: (_) {},
+          config: PointerConfig(color: const Color(0xffcccad8)),
+        ),
       ),
     );
   }
