@@ -3,7 +3,6 @@
 A wheel liked date picker with configurable colors and distance between steps.
 
 <img align="left" src="Capture.PNG" alt="Capture" style="zoom: 67%;" />
-<br />
 
 ## Installing
 
