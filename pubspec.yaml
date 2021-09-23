@@ -1,6 +1,6 @@
 name: wheel_date_picker
 description: Wheel date picker
-version: 0.0.1
+version: 0.0.1+2
 homepage: https://github.com/stack-finance/wheel_date_picker
 
 environment:
