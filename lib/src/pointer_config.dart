@@ -10,14 +10,14 @@ class PointerConfig {
   });
 
   /// If non-null, requires the child to have exactly this Width.
-  final double width;
+  final int width;
 
   /// If non-null, requires the child to have exactly this height.
-  final double height;
+  final int height;
 
-  final double secondaryHeight;
+  final int secondaryHeight;
 
   final Color color;
 
-  final double gap;
+  final int gap;
 }
