@@ -1,14 +1,33 @@
-# wheel_date_picker
+# Wheel Date Picker
 
-A new Flutter project.
+A wheel liked date picker with configurable colors and distance between steps.
 
-## Getting Started
+<img align="left" src="C:\Users\stack\StudioProjects\wheel_date_picker\Capture.PNG" alt="Capture" style="zoom: 67%;" />
 
-This project is a starting point for a Dart
-[package](https://flutter.dev/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
+## Installing
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+Add dependency in pubspec.yaml file
+
+```
+dependencies:
+	wheel_date_picker: <current_version>
+```
+
+
+
+## Importing
+
+```
+import 'package:wheel_date_picker/wheel_date_picker.dart';
+```
+
+
+
+## Usage
+
+```
+WheelDatePickerSlider(
+	onChanged: (value) {},
+    config: PointerConfig(),
+),
+```

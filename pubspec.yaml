@@ -1,7 +1,7 @@
 name: wheel_date_picker
-description: A new Flutter project.
+description: Wheel date picker
 version: 0.0.1
-homepage: www.google.com
+homepage: https://github.com/stack-finance/wheel_date_picker
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
