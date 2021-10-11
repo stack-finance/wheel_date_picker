@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
             children: [
               WheelDatePickerSlider(
                 onChanged: (_) {},
+                initialDate: 0,
                 config: PointerConfig(color: const Color(0xffcccad8)),
               ),
             ],

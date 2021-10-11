@@ -20,9 +20,13 @@ class WheelDatePickerSlider extends StatelessWidget {
     this.selectorColor = const Color(0xff4c67e2),
     this.controller,
     this.minDate = 0,
+    this.initialDate = 0,
   })  : assert(itemWidth >= 0),
         assert(maxDate >= 0),
+        assert(maxDate <= 31),
         assert(minDate >= 0),
+        assert(maxDate > minDate),
+        assert(initialDate >= minDate && initialDate <= maxDate),
         super(key: key);
 
   final int dateContainerHeight;
@@ -45,7 +49,7 @@ class WheelDatePickerSlider extends StatelessWidget {
 
   final Color selectorColor;
 
-  final ScrollController? controller;
+  final FixedExtentScrollController? controller;
 
   /// Maximum weight that the slider can be scrolled
   final int maxDate;
@@ -65,12 +69,24 @@ class WheelDatePickerSlider extends StatelessWidget {
   /// On optional listener that's called when the centered item changes.
   final ValueChanged<int> onChanged;
 
+  ///
+  /// Initial date for date picker
+  ///
+  final int initialDate;
+
   final onChange = ValueNotifier(0);
 
   final dateController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance!.addPostFrameCallback(
+      (_) => dateController.animateTo(
+        initialDate * dateContainerHeight.h,
+        duration: animDuration,
+        curve: Curves.fastOutSlowIn,
+      ),
+    );
     ScreenUtil().init(context);
     return Column(
       children: [
@@ -119,9 +135,10 @@ class WheelDatePickerSlider extends StatelessWidget {
             child: Stack(
               children: [
                 ListWheelScrollView(
-                  controller: controller,
+                  controller: controller ??
+                      FixedExtentScrollController(initialItem: initialDate),
                   itemExtent: itemWidth.w,
-                  physics: FixedExtentScrollPhysics(),
+                  physics: const FixedExtentScrollPhysics(),
                   perspective: 0.00000001,
                   onSelectedItemChanged: (val) {
                     onChange.value = val;

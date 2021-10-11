@@ -1,6 +1,6 @@
 name: wheel_date_picker
 description: A wheel liked date picker with configurable colors and distance between steps.
-version: 0.0.1+4
+version: 0.0.2
 homepage: https://github.com/stack-finance/wheel_date_picker
 
 environment:
