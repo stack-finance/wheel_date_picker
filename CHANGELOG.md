@@ -1,3 +1,7 @@
+## 0.0.1+4
+
+- fix: wheel ui fixes and pub point fixes.
+
 ## 0.0.1+3
 
 - chore: README update.
